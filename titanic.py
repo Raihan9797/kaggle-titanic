@@ -130,7 +130,7 @@ train.Name.value_counts() # lists all the names and their counts. 891 rows means
 # %%
 ### FEATURE: SEX ###
 train.Sex.value_counts()
-sns.barplot(y='Sex', x='Survived', data=train)
+sns.barplot(x='Survived', y=count , data=train)
 # %%
 
 
