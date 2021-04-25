@@ -22,4 +22,5 @@ Doing this to recap how to do Data Analysis. Learning:
 3. Visualizing data
 - seaborn is just another wrapper for matplotlib
 - plotly is more interactive and nicer but it seaborn is supposed to be faster
-- how to do grouped bar chart?
+- how to do grouped bar chart? Use a distribution plot, multiple = 'dodge'
+sns.displot(train, x="Survived", hue="Sex", multiple="dodge")

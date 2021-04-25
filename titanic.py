@@ -135,3 +135,14 @@ sns.barplot(x='Survived', y=count , data=train)
 
 
 # %%
+sns.displot(
+    data=train, x="Sex", hue="Survived", alpha=.6, height=6
+)
+
+# %%
+train.Survived.value_counts()
+
+# %%
+sns.displot(train, x="Survived", hue="Sex", multiple="dodge")
+
+# %%
