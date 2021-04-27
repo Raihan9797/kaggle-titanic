@@ -24,3 +24,8 @@ Doing this to recap how to do Data Analysis. Learning:
 - plotly is more interactive and nicer but it seaborn is supposed to be faster
 - how to do grouped bar chart? Use a distribution plot, multiple = 'dodge'
 sns.displot(train, x="Survived", hue="Sex", multiple="dodge")
+
+4. Transforming Data
+    1. How to get value_counts for grouped data? Need to use unstack() or pivot_table(). Need to search more on that
+    2. Change data types from int to bool as categorical (eg. Survived)
+    3. Using df.filter(), groupby() 
