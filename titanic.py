@@ -130,19 +130,93 @@ train.Name.value_counts() # lists all the names and their counts. 891 rows means
 # %%
 ### FEATURE: SEX ###
 train.Sex.value_counts()
-sns.barplot(x='Survived', y=count , data=train)
+sns.countplot(y= 'Sex', data = train)
 # %%
+# no null values
+train.Sex.isnull().sum()
 
 
 # %%
+# overlapping bar chart
 sns.displot(
     data=train, x="Sex", hue="Survived", alpha=.6, height=6
 )
 
 # %%
+### trying to plot a grouped bar chart
 train.Survived.value_counts()
 
 # %%
+### USE A DISTRIBUTION PLOT
+"""
+of those who died, more were male
+of those who survived, more were female
+"""
 sns.displot(train, x="Survived", hue="Sex", multiple="dodge")
 
 # %%
+# add Sex to the subset dataframes
+df_bin['Sex'] = train['Sex']
+df_bin['Sex'] = np.where(df_bin['Sex'] == 'female', 1, 0) # change sex to 0 for male and 1 for female
+
+df_con['Sex'] = train['Sex']
+# %%
+df_bin
+
+# %%
+# How does the Sex variable look compared to Survival?
+# We can see this because they're both binarys.
+fig = plt.figure(figsize=(10, 10))
+sns.distplot(df_bin.loc[df_bin['Survived'] == 1]['Sex'], kde_kws={'label': 'Survived'})
+sns.distplot(df_bin.loc[df_bin['Survived'] == 0]['Sex'], kde_kws={'label': 'Did not survive'})
+
+# %%
+### FEATURE: AGE ###
+train.Age.isnull().sum() # 177 / 891 null vals
+missingno.matrix(train)
+# q. how would i fill up these empty values?
+# a. i would get the average age and then fill them with that
+
+# %%
+train.Age.describe() # average is 29.699
+
+
+# %%
+x = train
+x.Age.fillna(30.0, inplace = True)
+
+# %%
+# count has increased to 891
+x.Age.describe()
+
+# %%
+### creating a function that will plot the graphs we need ###
+def plot_count_dist(data, bin_df, label_column, target_column, figsize=(20,5), use_bin_df = False):
+    """
+    function that plot counts and distribution of a label variable and target var side by side
+    """
+    if use_bin_df:
+    
+    else:
+
+
+
+
+# %%
+train.SibSp.value_counts()
+"""
+the frequency of the number of siblings and spouses each person had in the ship
+1. majority had 0 siblings or spouses with them on the ship
+2. the second biggest group only had 1; maybe couples.
+"""
+sns.displot(train, x='SibSp')
+
+
+
+
+# %%
+"""
+1. from the graph, we can see that if you have 1 SibSp, you were more likely to survive as compared to other groups
+2. we should try to find the proportion: how to aggregate?
+"""
+sns.displot(train, x='SibSp', hue='Survived', multiple = "dodge")
