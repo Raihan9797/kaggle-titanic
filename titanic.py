@@ -152,7 +152,10 @@ train.Survived.value_counts()
 of those who died, more were male
 of those who survived, more were female
 """
-sns.displot(train, x="Survived", hue="Sex", multiple="dodge")
+#sns.displot(train, x="Survived", hue="Sex", multiple="dodge")
+sns.displot(
+    data=train, x="Sex", hue="Survived", alpha=.6, height=6, multiple = 'dodge'
+)
 
 # %%
 # add Sex to the subset dataframes
@@ -167,8 +170,8 @@ df_bin
 # How does the Sex variable look compared to Survival?
 # We can see this because they're both binarys.
 fig = plt.figure(figsize=(10, 10))
-sns.distplot(df_bin.loc[df_bin['Survived'] == 1]['Sex'], kde_kws={'label': 'Survived'})
-sns.distplot(df_bin.loc[df_bin['Survived'] == 0]['Sex'], kde_kws={'label': 'Did not survive'})
+sns.displot(df_bin.loc[df_bin['Survived'] == 1]['Sex'], kde_kws={'label': 'Survived'})
+sns.displot(df_bin.loc[df_bin['Survived'] == 0]['Sex'], kde_kws={'label': 'Did not survive'})
 
 # %%
 ### FEATURE: AGE ###
@@ -196,10 +199,29 @@ def plot_count_dist(data, bin_df, label_column, target_column, figsize=(20,5), u
     function that plot counts and distribution of a label variable and target var side by side
     """
     if use_bin_df:
+        fig = plt.figure(figsize = figsize)
+
+        plt.subplot(1, 2, 1)
+        sns.countplot(y = target_column, data=bin_df)
+
+        plt.subplot(1, 2, 2)
+        sns.displot(data.loc[data[label_column] == 1][target_column], 
+        label = 'Survived')
+        sns.displot(data.loc[data[label_column] == 0][target_column], 
+        kde_kws = {'label': 'Died'})
+        fig.legend(labels=['test_label1','test_label2'])
+
     
     else:
+        fig = plt.figure(figsize = figsize)
 
+        plt.subplot(1, 2, 1)
+        sns.countplot(y = target_column, data=data)
 
+        plt.subplot(1, 2, 2)
+        sns.displot(data.loc[data[label_column] == 1][target_column])
+        sns.displot(data.loc[data[label_column] == 0][target_column])
+        fig.legend(labels=['test_label1','test_label2'])
 
 
 # %%
@@ -220,3 +242,58 @@ sns.displot(train, x='SibSp')
 2. we should try to find the proportion: how to aggregate?
 """
 sns.displot(train, x='SibSp', hue='Survived', multiple = "dodge")
+
+# %%
+train.groupby(['Survived', 'SibSp']).count()
+train.filter(items=['Survived', 'SibSp']).groupby(['SibSp']).sum()
+# %%
+y = train
+y['Survived'] = y['Survived'].astype(bool)
+y
+
+# %%
+y.groupby(['Survived', 'SibSp']).count()
+y.filter(items=['Survived', 'SibSp']).groupby(['SibSp']).sum()
+
+
+
+# %%
+df_bin['SibSp'] = train ['SibSp']
+df_con['SibSp'] = train ['SibSp']
+
+# %%
+plot_count_dist(train,
+                bin_df = df_bin,
+                label_column = 'Survived',
+                target_column = 'SibSp',
+                figsize = (20,10),
+
+)
+# %%
+### FEATURE: PARCH - number of parents or children a passenger has on the ship
+train.Parch.isnull().sum() # 0
+train['Parch'].value_counts() 
+#train['Parch'].describe()
+
+# %%
+### add to dataframes
+df_bin['Parch'] = train['Parch']
+df_con['Parch'] = train['Parch']
+
+# %%
+plot_count_dist(train,
+                bin_df = df_bin,
+                label_column = 'Survived',
+                target_column = 'Parch',
+                figsize = (20,10),
+                #use_bin_df = True
+                )
+# %%
+
+fig = plt.figure(figsize = (20,10))
+sns.displot(train.loc[train['Survived'] == 1]['Parch'], label = 'Survived')
+sns.displot(train.loc[train['Survived'] == 0]['Parch'], label = 'died')
+plt.legend()
+sns.displot(train.loc[train[label_column] == 0][target_column], kde_kws = {'label': 'Died'})
+
+# %%
