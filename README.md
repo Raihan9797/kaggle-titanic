@@ -79,3 +79,35 @@ os.getcwd()
 
 15. converting continuous numeric column to discretized values
 > df_bin['Age'] = pd.cut(train['Age'], 10) # bucketed/binned into different categories
+
+
+16. Seaborn distplot is deprecated; use displot() or histplot(). Read through the docs and understand how to replicated the graphs shown!
+- The kde doesnt really match what is shown though?
+
+
+17. Subplotting: using the new displot() creates an empty subplot for no reason
+- updated version
+```
+        fig, axs = plt.subplots(nrows=1, ncols=2, figsize = figsize)
+        sns.countplot( y=target_column, data=data, ax = axs[0])
+        sns.histplot(data=train,
+                    x = target_column,
+                    kde=True,
+                    multiple='dodge',
+                    hue= label_column,
+                    ax = axs[1],
+                    stat = 'count'
+                    )
+```
+- still different: the density is not the same; and the kde graph doesnt start the same
+
+
+18. Jupyter lab autocompletion not working
+> %config Completer.use_jedi = False
+- after that press <tab> to auto complete; won't be able to intellisense for u.
+> !pip3 install jedi==0.17.2
+- install this version instead; for me, doesnt intellisense
+
+
+19. Drop na rows
+> df_con = df_con.dropna(subset = ['Embarked'])
