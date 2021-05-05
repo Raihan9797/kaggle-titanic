@@ -111,3 +111,12 @@ os.getcwd()
 
 19. Drop na rows
 > df_con = df_con.dropna(subset = ['Embarked'])
+
+20. Feature Encoding: One Hot Encoding.
+> df_bin_enc = pd.get_dummies(df_bin, columns=one_hot_cols)
+- Using pd.get_dummies to basically get one hot encoding
+
+- DBourke changes from Label Encoder to OneHotEncoder because Label Encoder might implicitly create some kind of ordering even when there isn't any. Check this (example)[https://contactsunny.medium.com/label-encoder-vs-one-hot-encoder-in-machine-learning-3fc273365621]
+
+21. OneHotEncoder vs pd.get_dummies:
+- Conclusion: use OneHotEncoder if you are going to do ML. Read (this)[https://stackoverflow.com/questions/36631163/what-are-the-pros-and-cons-between-get-dummies-pandas-and-onehotencoder-sciki]
