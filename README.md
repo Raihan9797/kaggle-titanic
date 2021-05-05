@@ -120,3 +120,29 @@ os.getcwd()
 
 21. OneHotEncoder vs pd.get_dummies:
 - Conclusion: use OneHotEncoder if you are going to do ML. Read (this)[https://stackoverflow.com/questions/36631163/what-are-the-pros-and-cons-between-get-dummies-pandas-and-onehotencoder-sciki]
+
+22. (Video)[https://www.youtube.com/watch?v=9yl6-HEY7_s] using One Hot Encoder
+
+23. (Video)[https://www.youtube.com/watch?v=irHhDMbw3xo] the benefits of One Hot Encoder, along with column_transformer and pipeline.
+- Using this one hot encoder, we are able to use the column_transfrom to encode specific columns only.
+- Using the column_transform, we are able to use this in a pipeline so you dont have to keep preprocessing new input!!! Just re-use the pipeline! Because it took in the initial one hot encoder, it will keep the correct categories
+    - Eg. Your training set has M and F, but in your test set, there is only F. If you pd.get_dummies(test_set), it will only think the F exists! Using the OneHotEncoder, this will not happen!
+
+24. Current downside of using OneHotEncoder: it is converted to an array
+- technically is fine, but not human readable because there are no columns to read from
+
+25. Basic splitting of train and test data
+X_train = df.drop('label_col', axis = 1)
+y_train = df.label_col
+
+26. Using sklearn algos
+- Very easy, just fit
+- use model.score(x_train, y_train) to get the accuracy of the model, BUT ONLY TRAINED ONCE.
+- can use model_selection.cross_val_predict() to get y_pred using cross validation
+- can use metrics.accuracy_score to get cross validated accuracy
+- overall work ok even without any parameter tuning!
+
+
+27. timing functions
+> start_time = time.time()
+> time_diff = time.time() - start_time
