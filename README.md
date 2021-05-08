@@ -146,3 +146,54 @@ y_train = df.label_col
 27. timing functions
 > start_time = time.time()
 > time_diff = time.time() - start_time
+
+28. Using Catboost: open source gradient boosting library
+- Issues with ipywidget: can't display the graph of logloss as we train the model on vscode. Changed to jupyterlab, still doesnt work. Turns out, jupyter notebook != jupter lab. Used the classic notebook to run.
+> python -m jupyter notebook
+
+29. Precision vs recall
+- (how to remember)[https://towardsdatascience.com/finally-remember-precision-and-recall-94b4d481f9bf]
+
+30. y_true and y_pred for sklearn
+- In all sklearn libraries, **make sure to put y_true then y_pred**
+> print(classification_report(y_train , y_pred))
+
+31. Important classification metrics
+> from sklearn.metrics import classification_report, confusion_matrix
+
+32. The sklearn confusion matrix
+- Assuming that you follow the input correctly (y_true, y_pred), the confusion matrix will create an array in which the column names are the predicted values, while the rows (aka index) are the true values. To make it explicit, you can create a dataframe and rename the labels like this:
+```
+pd.DataFrame(confusion_matrix(y_train, gbt_pred),
+          columns = ['Predicted: 0', 'Predicted: 1'],
+           index = ['Acutal: 0', "Actual: 1"])
+```
+
+33. This tutorial didnt actually cover train-test split. Fortunately, you already know how to do this (because its a function in sklearn) so we can skip this step. 
+
+34. Submitting your predictions: make sure your test set has been preprocessed the same way!!
+
+
+# Possible Extensions (from the last part of my jupyter notebook)
+Some reccomendations by DBourke, and my own reflections
+
+1. The Age feature
+- All I did was just use the mean() to fill up the age. Just by doing that I was able to get Age to the 2nd highest feature importance.
+- DBourke suggest reading up on the interpolate() function of Pandas.
+- Another way I saw on Youtube, was to basically use ML model that would fill up the values. An example of this could be kmeans clustering, those with similar attributes could be given similar Ages in this case.
+
+2. What to do with Name.
+Initially, i thought we should just remove, the Mr. Mrs etc. But DBourke actually recommends focusing on those! My reasoning for this was that Mr and Mrs are already in Sex.
+- But other prefixes could come up: Titles like Dr. etc that might affect how a person is likely to be saved!!
+
+3. Cabin feature
+- Is there a way to see if they had a cabin or not? DBourke didnt answer this but i guess using the Pclass? and ticket number?
+
+4. Combine SibSp and Parch to see if the person was alone.
+Actually a very good idea which I did think about but never articulated. I would think those that are not alone might actually have less chance of surviving? If you are not alone, one of you is more likely to survive imo.
+
+5. Hyperparameter tuning.
+- Dbourke reccomends hyperopt library. We could also use GridSearch and Randomized search iirc.
+- https://github.com/hyperopt/hyperopt
+
+6. As we have seen when trying to do the submission, it was actually quite annoying to do all the preprocessing steps again for the test set. Should really consider using the pipeline feature on sklearn.
